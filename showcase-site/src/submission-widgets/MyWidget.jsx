@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import dragon from "../assets/dragon.avif";
 import squishy from "../assets/squishy.jpeg";
+import sound from "../assets/sound.wav";
 
 const MyWidget = () => {
   const [tasks, setTasks] = useState([]);
@@ -8,6 +9,7 @@ const MyWidget = () => {
   const [showTasks, setShowTasks] = useState(false);
   const [showModal, setShowModal] = useState(false); // 控制弹窗显示
   const [newTask, setNewTask] = useState({ text: "", dueDate: "", duration: "", participants: "" });
+  const [audio] = useState(new Audio(sound));
 
   // 打开/关闭弹窗
   const openModal = () => setShowModal(true);
@@ -41,6 +43,7 @@ const MyWidget = () => {
   const handleClick = () => {
     setImageSrc((prevSrc) => (prevSrc === dragon ? squishy : dragon));
     setShowTasks(!showTasks);
+    audio.play();
   };
 
   return (
@@ -124,7 +127,7 @@ const MyWidget = () => {
           <img
             src={imageSrc}
             alt="button_image"
-            className="w-[300px] h-[500px] object-cover cursor-pointer"
+            className="w-[400px] h-[500px] object-cover cursor-pointer"
             onClick={handleClick}
           />
         </div>
