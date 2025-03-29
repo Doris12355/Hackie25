@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import dragon from "../assets/dragon.avif";
-import squishy from "../assets/squishy.png";
+import squishy from "../assets/squishy.jpeg";
 
 const MyWidget = () => {
   const [task, setTask] = useState(""); // 输入框的值
