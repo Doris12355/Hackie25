@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import dragon from "../assets/dragon.avif";
 import squishy from "../assets/squishy.jpeg";
+import sound from "../assets/sound.wav";
+import water from "../assets/water1.png";
 
 const MyWidget = () => {
   const [tasks, setTasks] = useState([]);
@@ -8,6 +10,8 @@ const MyWidget = () => {
   const [showTasks, setShowTasks] = useState(false);
   const [showModal, setShowModal] = useState(false); // 控制弹窗显示
   const [newTask, setNewTask] = useState({ text: "", dueDate: "", duration: "", participants: "" });
+  const [audio] = useState(new Audio(sound));
+  const [waterSrc, setWaterSrc] = useState(water);
   const [aiSummary, setAiSummary] = useState(""); // AI summary text
   const [language, setLanguage] = useState("en"); // 语言状态（默认英文）
 
@@ -43,6 +47,7 @@ const MyWidget = () => {
   const handleClick = () => {
     setImageSrc((prevSrc) => (prevSrc === dragon ? squishy : dragon));
     setShowTasks(!showTasks);
+    audio.play();
   };
 
   // AI总结函数
@@ -148,35 +153,37 @@ const MyWidget = () => {
             {tasks.map((t, index) => (
               <li
                 key={index}
-                className={`p-2 border rounded-md ${
-                  t.completed ? "bg-green-100 line-through text-gray-500" : "bg-gray-100"
-                }`}
+                className="relative p-2 rounded-md"
               >
-                <div className="flex justify-between items-center">
-                  <div className="flex-grow cursor-pointer" onClick={() => toggleTaskCompletion(index)}>
-                    <strong>{t.text}</strong>
-                    {t.dueDate && <p className="text-sm text-gray-600">📅 {language === "en" ? `Due: ${t.dueDate}` : `截止: ${t.dueDate}`}</p>}
-                    {t.duration && <p className="text-sm text-gray-600">⏳ {language === "en" ? `Duration: ${t.duration}` : `时长: ${t.duration}`}</p>}
-                    {t.participants && <p className="text-sm text-gray-600">👤 {language === "en" ? `Participants: ${t.participants}` : `参与者: ${t.participants}`}</p>}
-                  </div>
-                  <button
-                    onClick={() => handleDeleteTask(index)}
-                    className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-700 transition"
-                  >
-                    X
-                  </button>
+                <div className="relative w-[430px] h-[270px]"> {/* Set a specific height for the image container */}
+                  <img
+                    src={waterSrc} // Replace with your image URL
+                    alt="task-background"
+                    className="w-full h-full object-cover rounded-md"
+                    
+                  />
+                  <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center text-center text-white bg-transparent bg-opacity-50">
+                    <div className="p-4" onClick={() => handleDeleteTask(index)}>
+                      <strong>{t.text}</strong>
+                      {t.dueDate && <p className="text-sm">📅 {language === "en" ? `Due: ${t.dueDate}` : `截止: ${t.dueDate}`}</p>}
+                      {t.duration && <p className="text-sm">⏳ {language === "en" ? `Duration: ${t.duration}` : `时长: ${t.duration}`}</p>}
+                      {t.participants && <p className="text-sm">👤 {language === "en" ? `Participants: ${t.participants}` : `参与者: ${t.participants}`}</p>}
+                    </div>
+                  </div> 
                 </div>
+                
               </li>
             ))}
           </ul>
         )}
+
 
         {/* 图片，点击后显示/隐藏任务 */}
         <div className="flex justify-center">
           <img
             src={imageSrc}
             alt="button_image"
-            className="w-[400px] h-[500px] object-cover cursor-pointer"
+            className="w-[300px] h-[350px] object-cover cursor-pointer"
             onClick={handleClick}
           />
         </div>
